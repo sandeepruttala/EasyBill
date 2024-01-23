@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="{% static 'images/logo1.ico' %}" />
+  <link rel="stylesheet" href="{% static 'css/register-staff.css' %}" />
+  <title>EasyBill: Register Staff</title>
+  <style>
+  </style>
+</head>
+
+<body>
+  {% if messages %} {% for message in messages %}
+  <script>
+    alert("{{message}}");
+  </script>
+  {% endfor %} {% endif %} {% if error %}
+  <script>
+    alert("{{error}}");
+  </script>
+  {% endif %}
+  <div class="back">
+    <a href="{% url 'links' 'modify_staff' %}"><i class="fas fa-arrow-left"></i><span>&nbsp;Back</span></a>
+  </div>
+  <div class="container">
+    <div class="logo">
+      <img src="{% static 'images/logo_banner.png' %}" alt="logo" />
+    </div>
+    <h1 class="h1">Register</h1>
+    <div class="form">
+      <form action="{%url 'register-staff'%}" method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <input type="password" name="confirm_password" placeholder="Confirm Password" required />
+        <input type="checkbox" id="show" onclick="showPassword()" />
+        <label for="show">show password</label>
+        <input type="submit" value="Create Staff Account" />
+      </form>
+    </div>
+    <div class="creator">
+      <p>- Created by Sandeep Ruttala -</p>
+      <div class="links">
+        <a href="https://www.github.com/sandeepruttala" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/sandeep-ruttala/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://www.instagram.com/sandeepruttala/" target="_blank"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="copyrights">
+    <p>© 2024 EasyBill. All Rights Reserved.</p>
+  </div>
+  <script src="https://kit.fontawesome.com/b562ad32cf.js" crossorigin="anonymous"></script>
+  <script>
+    function showPassword() {
+      const password = document.querySelector('input[name="password"]');
+      const confirm_password = document.querySelector(
+        'input[name="confirm_password"]'
+      );
+      const show = document.querySelector('input[id="show"]');
+      if (show.checked) {
+        password.type = "text";
+        confirm_password.type = "text";
+      } else {
+        password.type = "password";
+        confirm_password.type = "password";
+      }
+    }
+    const username = document.querySelector('input[name="username"]');
+    const password = document.querySelector('input[name="password"]');
+    const confirm_password = document.querySelector(
+      'input[name="confirm_password"]'
+    );
+    const submit = document.querySelector('input[type="submit"]');
+    submit.addEventListener("click", (e) => {
+      // check if username is empty
+      if (username.value == "") {
+        e.preventDefault();
+        alert("Username cannot be empty!");
+        return;
+      }
+      // check if password is empty
+      if (password.value == "") {
+        e.preventDefault();
+        alert("Password cannot be empty!");
+        return;
+      }
+      // check if confirm password is empty
+      if (confirm_password.value == "") {
+        e.preventDefault();
+        alert("Confirm Password cannot be empty!");
+        return;
+      }
+      //username validation no numbers or special characters
+      const regex = /^[a-zA-Z]+$/;
+      if (!regex.test(username.value)) {
+        e.preventDefault();
+        alert("Username can only contain letters!");
+        return;
+      }
+      //strong password validation
+      const regex2 =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/;
+      if (!regex2.test(password.value)) {
+        e.preventDefault();
+        alert(
+          "Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character!"
+        );
+        return;
+      }
+      if (password.value != confirm_password.value) {
+        e.preventDefault();
+        alert("Passwords do not match!");
+        return;
+      }
+    });
+  </script>
+</body>
+
+</html>

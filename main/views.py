@@ -1,0 +1,169 @@
+from django.shortcuts import render, redirect
+from users.models import CustomUser
+from .models import Table, Item, Order, OrderHistory
+from django.contrib import messages
+from django.http import JsonResponse
+from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse
+
+def home(request):
+    return render(request, 'index.html')
+
+def links(request, links):
+    if links == 'view_tables':
+        return view_tables(request)
+    elif links == 'modify_tables':
+        return modify_tables(request)
+    elif links == 'modify_staff':
+        return modify_staff(request)
+    elif links == 'view_staff':
+        return view_staff(request)
+    elif links == 'view_menu':
+        return view_menu(request)
+
+def login_(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        if user:
+            if user.is_superuser:
+                login(request, user)
+                return redirect('admin-home')
+            else:
+                user.session = True
+                user.save()
+                login(request, user)
+                return redirect('staff-home')
+        else:
+            messages.error(request, 'Invalid Credentials')
+            return redirect('login')
+        
+    return render(request, 'login.html')
+
+def logout_(request):
+    user = request.user
+    user.session = False
+    user.save()
+    logout(request)
+    return redirect('login')
+
+def admin_(request):
+    user = request.user
+    if user.is_authenticated and user.is_superuser:
+        return render(request, 'admin.html')
+    else:
+        return redirect('login')
+
+def staff_(request):
+    user = request.user
+    if user.is_authenticated and user.is_staff:
+        return render(request, 'staff.html')
+    else:
+        return redirect('login')
+
+def register_staff(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if CustomUser.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists')
+            return redirect('register-staff')
+        else:
+            user = CustomUser.objects.create_user(username=username, password=password, is_staff=True)
+            messages.success(request, 'Staff Registered Successfully')
+    return render(request, 'register-staff.html')
+
+def view_tables(request):
+    user = request.user
+    if user.is_authenticated and user.is_staff:
+        return render(request, 'view-tables.html')
+    else:
+        return redirect('login')
+    
+def back_home(request):
+    user = request.user
+    if user.is_authenticated and user.is_superuser:
+        return redirect(reverse('admin-home'))
+    else:
+        return redirect(reverse('staff-home'))
+    
+def modify_tables(request):
+    user = request.user
+    if user.is_authenticated and user.is_staff:
+        return render(request, 'modify-tables.html')
+    else:
+        return redirect('login')
+
+def modify_staff(request):
+    user = request.user
+    if user.is_authenticated and user.is_superuser:
+        return render(request, 'modify-staff.html')
+    else:
+        return redirect('login')
+
+def fetch_staff(request):
+    staff = CustomUser.objects.filter(is_staff=True)
+    data = []
+    for i in staff:
+        if i.is_superuser:
+            continue
+        data.append({
+            'username': i.username,
+            'id': i.id,
+            'session': i.session,
+        })
+    # print(data)
+    return JsonResponse({'data': data})
+
+def delete_staff(request):
+    if request.method == 'GET':
+        id = request.GET.get('id','')
+        CustomUser.objects.filter(id=id).delete()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})
+
+def view_staff(request):
+    user = request.user
+    if user.is_authenticated and user.is_superuser:
+        return render(request, 'view-staff.html')
+    else:
+        return redirect('login')
+    
+def fetch_tables(request):
+    tables = Table.objects.all()
+    data = []
+    for i in tables:
+        data.append({
+            'table_number': i.table_number,
+            'table_name': i.table_name,
+            'id': i.id,
+        })
+    return JsonResponse({'data': data})
+
+def delete_table(request):
+    if request.method == 'GET':
+        table_number = request.GET.get('table_number','')
+        Table.objects.filter(table_number=table_number).delete()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})
+
+def add_table(request):
+    if request.method == 'GET':
+        table_number = request.GET.get('table_number','')
+        table_name = 'Table'+str(table_number)
+        if Table.objects.filter(table_number=table_number).exists():
+            return JsonResponse({'status': 'error'})
+        else:
+            Table.objects.create(table_number=table_number, table_name=table_name)
+            return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})
+
+def view_menu(request):
+    user = request.user
+    if user.is_authenticated and user.is_staff:
+        return render(request, 'view-menu.html')
+    else:
+        return redirect('login')

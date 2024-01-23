@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'images/logo1.ico' %}" />
+    <title>EasyBill: View Tables</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: white;
+        }
+
+        header {
+            width: 100%;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            padding: 0 30px;
+            margin: 0 10px;
+        }
+
+        .nav-links ul {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            list-style: none;
+        }
+
+        .nav-links ul li a {
+            color: black;
+            font-size: 18px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .nav-links ul li a:hover {
+            color: #ff4a4a;
+        }
+
+        .logo img {
+            width: 200px;
+            height: 80px;
+        }
+
+        .back a {
+            color: black;
+            font-size: 18px;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 50%;
+        }
+
+        .back a:hover {
+            color: #498fffe1;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            min-height: 100vh;
+            margin-top: 100px;
+        }
+
+        .heading {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .heading p {
+            font-size: 30px;
+            color: rgb(70, 70, 70);
+        }
+
+        .sep{
+            height: 90%;
+            border: 0.1px solid #d8d7d7;
+        }
+
+        .cards {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .card-link {
+            text-decoration: none;
+        }
+
+        .card {
+            width: 400px;
+            height: 200px;
+            background-color: white;
+            margin: 20px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #f0f0f0;
+            transition: 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            scale: 1.05;
+        }
+
+        .card-image {
+            width: 40%;
+            font-size: 100px;
+            text-align: center;
+        }
+
+        .card-image i {
+            color: grey;
+            opacity: 0.5;
+        }
+
+        .card-body {
+            width: 60%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .card-header {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: rgb(70, 70, 70);
+        }
+
+        .card-button {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-button button {
+            width: 120px;
+            height: 40px;
+            border: none;
+            outline: none;
+            background-color: #0062ffe1;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .card-button button:hover {
+            background-color: #0062ff;
+        }
+
+        .status{
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        footer {
+            width: 100%;
+            height: 100px;
+            background-color: rgb(240, 240, 240);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .creator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .creator p {
+            font-size: 14px;
+            color: #838383;
+        }
+
+        .links {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .links a {
+            margin: 0 10px;
+            color: #838383;
+            font-size: 15px;
+        }
+
+        .links a:hover {
+            color: #333;
+        }
+
+        .links a i {
+            transition: 0.3s;
+        }
+
+        .links a:hover i {
+            transform: scale(1.2);
+        }
+
+        .copyrights p {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                height: 65px;
+            }
+
+            nav {
+                padding: 0 10px;
+            }
+
+            nav span {
+                display: none;
+            }
+
+            .logo img {
+                width: 150px;
+                height: 60px;
+            }
+
+            .sep {
+                display: none;
+            }
+
+            .main {
+                margin-top: 65px;
+            }
+
+            .cards {
+                width: 90%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+            }
+
+            .card {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                width: 350px;
+                height: 50px;
+                margin: 5px 0;
+            }
+
+            .card:hover {
+                scale: 1.0;
+            }
+
+            .card-image {
+                font-size: 25px;
+                text-align: center;
+                width: 20%;
+            }
+
+            .card-body {
+                width: 80%;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .card-header h1 {
+                font-size: 20px;
+                text-align: center;
+                margin-right: 25px;
+            }
+
+            .card-button {
+                width: 20%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .card-button button {
+                width: 30px;
+                height: 30px;
+                font-size: 15px;
+            }
+
+            .card-button button span {
+                display: none;
+            }
+
+            .status{
+                margin-bottom: 0px;
+            }
+
+            footer {
+                height: 90px;
+            }
+
+            .creator p {
+                font-size: 15px;
+            }
+
+            .links a {
+                font-size: 15px;
+            }
+
+            .links a i {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="back">
+                <a href="{% url 'back-home' %}"><i class="fas fa-arrow-left"></i>&nbsp;<span>Back</span></a>
+            </div>
+            <div class="logo">
+                <img src="{% static 'images/logo_banner.png' %}" alt="logo" />
+            </div>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="{% url 'logout' %}"><i
+                                class="fa-solid fa-right-from-bracket"></i>&nbsp;<span>Logout</span></a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="main">
+        <div class="heading">
+            <p><i class="fa-solid fa-utensils"></i>&nbsp;&nbsp;View Tables</p>
+        </div>
+        <div class="cards">
+            <!-- dynamic -->
+        </div>
+    </div>
+    <footer>
+        <div class="creator">
+            <p>- Created by Sandeep Ruttala -</p>
+            <div class="links">
+                <a href="https://www.github.com/sandeepruttala" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/sandeep-ruttala/" target="_blank"><i
+                        class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/sandeepruttala/" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        </div>
+        <div class="copyrights">
+            <p>© 2024 EasyBill. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script src="https://kit.fontawesome.com/b562ad32cf.js" crossorigin="anonymous"></script>
+    <script>
+        function fetch_tables() {
+            fetch(`/fetch_tables/`)
+            .then(response => response.json())
+            .then(data => {
+                const cards = document.querySelector('.cards');
+                if (data.data.length == 0) {
+                    cards.innerHTML = `<h1 style="color: grey; margin-top: 50px;">No Tables Found</h1>`;
+                }
+                // sort data according to table number
+                data.data.sort((a, b) => {
+                    return a.table_number - b.table_number;
+                })
+                data.data.forEach(table => {
+                    cards.innerHTML += `
+                    <div class="card">
+                        <div class="card-image">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <div class="sep"></div>
+                        <div class="card-body">
+                            <div class="card-header">
+                                <h1>${table.table_name}</h1>
+                            </div>
+                            <div class="card-button">
+                                <a href="*"><button><i class="fa-solid fa-arrow-up-right-from-square"></i><span>&nbsp;Orders</span></button></a>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                })
+            })
+        }
+        fetch_tables();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'images/logo1.ico' %}" />
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}" />
+    <title>EasyBill: Staff Home</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: white;
+        }
+        header {
+            width: 100%;
+            height: 100px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            padding: 0 30px;
+        }
+        .nav-links ul {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            list-style: none;
+        }
+        .nav-links ul li {
+            padding: 0 40px;
+        }
+        .nav-links ul li a {
+            color: black;
+            font-size: 18px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .nav-links ul li a:hover {
+            color: #ff4a4a;
+        }
+        .logo img {
+            width: 200px;
+            height: 80px;
+        }
+        .tagline h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: rgb(70, 70, 70);
+        }
+        .sep{
+            height: 90%;
+            border: 0.1px solid #d8d7d7;
+        }
+        .main {
+            width: 100%;
+            min-height: 100vh;
+            background-color: white;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+        }
+        .welcome {
+            margin-top: 120px;
+            font-size: 30px;
+            font-weight: 700;
+            color: rgb(70, 70, 70);
+            margin-bottom: 15px;
+        }
+        .cards {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .card-link {
+            text-decoration: none;
+        }
+        .card {
+            width: 400px;
+            height: 200px;
+            background-color: white;
+            margin: 20px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #f0f0f0;
+            transition: 0.3s ease-in-out;
+        }
+        .card:hover {
+            scale: 1.05;
+        }
+        .card-image {
+            width: 40%;
+            font-size: 100px;
+            text-align: center;
+        }
+        .card-image i {
+            color: grey;
+            opacity: 0.5;
+        }
+        .card-body{
+            width: 60%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .card-header {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card-header h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: rgb(70, 70, 70);
+        }
+        .card-button {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card-button button {
+            width: 150px;
+            height: 40px;
+            border: none;
+            outline: none;
+            background-color: #0062ffe1;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .card-button button:hover {
+            background-color: #498fffe1;
+        }
+        footer {
+            width: 100%;
+            height: 100px;
+            background-color: rgb(240, 240, 240);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .creator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .creator p {
+            font-size: 14px;
+            color: #838383;
+        }
+        .links {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .links a {
+            margin: 0 10px;
+            color: #838383;
+            font-size: 15px;
+        }
+
+        .links a:hover {
+            color: #333;
+        }
+
+        .links a i {
+            transition: 0.3s;
+        }
+
+        .links a:hover i {
+            transform: scale(1.2);
+        }
+
+        .copyrights p{
+            margin-top: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                height: 80px;
+            }
+            nav{
+                padding: 0 10px;
+            }
+            .nav-links ul li {
+                padding: 0 20px;
+            }
+            .logo img {
+                width: 150px;
+                height: 60px;
+            }
+            .tagline h1 {
+                display: none;
+            }
+            .cards{
+                width: 90%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+            }
+            .card {
+                width: 350px;
+                height: 200px;
+                margin: 20px 0;
+            }
+            .card-image {
+                width: 40%;
+                font-size: 100px;
+                text-align: center;
+            }
+            .card-body{
+                width: 60%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+            .card-header h1 {
+                font-size: 25px;
+            }
+            .card-button button {
+                width: 120px;
+                height: 40px;
+                font-size: 14px;
+            }
+            footer {
+                height: 90px;
+            }
+            .creator p {
+                font-size: 15px;
+            }
+            .links a {
+                font-size: 15px;
+            }
+            .links a i {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="{% static 'images/logo_banner.png' %}" alt="logo" />
+            </div>
+            <div class="tagline">
+                    <h1>- Staff Home -</h1>
+            </div>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="main">
+        <div class="welcome">
+            Welcome, {{ user.username }}!
+        </div>
+        <div class="cards">
+            
+            <a href="*" class="card-link">
+                <div class="card">
+                    <div class="card-image">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <div class="sep"></div>
+                    <div class="card-body">
+                        <div class="card-header">
+                            <h1>Manage Tables</h1>
+                        </div>
+                        <div class="card-button">
+                            <button>Manage&nbsp;<i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a href="*" class="card-link">
+                <div class="card">
+                    <div class="card-image">
+                        <i class="fa-solid fa-scroll"></i>
+                    </div>
+                    <div class="sep"></div>
+                    <div class="card-body">
+                        <div class="card-header">
+                            <h1>View Menu</h1>
+                        </div>
+                        <div class="card-button">
+                            <button>View&nbsp;<i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </div>
+    <footer>
+        <div class="creator">
+            <p>- Created by Sandeep Ruttala -</p>
+            <div class="links">
+              <a href="https://www.github.com/sandeepruttala" target="_blank"><i class="fab fa-github"></i></a>
+              <a href="https://www.linkedin.com/in/sandeep-ruttala/" target="_blank"><i class="fab fa-linkedin"></i></a>
+              <a href="https://www.instagram.com/sandeepruttala/" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="copyrights">
+            <p>© 2024 EasyBill. All Rights Reserved.</p>
+          </div>
+    </footer>
+    <script src="https://kit.fontawesome.com/b562ad32cf.js" crossorigin="anonymous"></script>
+</body>
+</html>

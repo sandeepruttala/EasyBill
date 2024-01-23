@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="{% static 'images/logo1.ico' %}" />
+    <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+    <title>EasyBill: Effortless Dining, Seamless Billing</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <img src="{% static 'images/logo_banner.png' %}" alt="logo" />
+      </div>
+      <div class="logo-text">
+        <h1>Effortless Dining, Seamless Billing</h1>
+        <p>Your All-in-One Restaurant Solution!</p>
+        <a href="{% url 'login' %}"><button>Login</button></a>
+      </div>
+    </div>
+  </body>
+</html>

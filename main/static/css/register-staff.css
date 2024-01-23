@@ -1,0 +1,229 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: white;
+    font-family: "Lato", sans-serif;
+}
+
+.back {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    font-size: 25px;
+}
+
+.back a {
+    text-decoration: none;
+    color: black;
+}
+
+.container {
+    width: fit-content;
+    height: fit-content;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 60px;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.logo {
+    width: fit-content;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.logo img {
+    height: 100%;
+}
+
+form {
+    width: 330px;
+    padding: 20px;
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+input[type="checkbox"] {
+    width: fit-content !important;
+    height: 10px;
+}
+
+label {
+    /* margin-left: 10px; */
+    font-size: 14px;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+    background-color: #333;
+    color: #fff;
+    border: none;
+}
+
+input[type="submit"]:hover {
+    background-color: #555;
+}
+
+p {
+    font-size: 14px;
+    text-align: center;
+    color: #555;
+}
+
+.creator {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.links {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.links a {
+    margin: 0 10px;
+    color: #838383;
+    font-size: 20px;
+}
+
+.links a:hover {
+    color: #333;
+}
+
+.links a i {
+    transition: 0.3s;
+}
+
+.links a:hover i {
+    transform: scale(1.2);
+}
+
+.copyrights {
+    margin-top: 60px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .back {
+        top: 20px;
+        left: 20px;
+    }
+
+    .back a {
+        font-size: 20px;
+    }
+
+    .back span {
+        display: none;
+    }
+
+    container {
+        width: 300px;
+        height: fit-content;
+        margin-top: 120px;
+    }
+
+    .logo {
+        width: fit-content;
+        height: 80px;
+        margin-bottom: 5px;
+    }
+
+    .logo img {
+        /* width: 100%; */
+        height: 100%;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    form {
+        width: 280px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+    }
+
+    input[type="submit"] {
+        cursor: pointer;
+        background-color: #333;
+        color: #fff;
+        border: none;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #555;
+    }
+
+    p {
+        font-size: 14px;
+        text-align: center;
+        color: #555;
+    }
+
+    .creator {
+        margin-top: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .links {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .links a {
+        margin: 0 10px;
+        color: #838383;
+        font-size: 20px;
+    }
+
+    .links a:hover {
+        color: #333;
+    }
+
+    .links a i {
+        transition: 0.3s;
+    }
+
+    .links a:hover i {
+        transform: scale(1.2);
+    }
+}

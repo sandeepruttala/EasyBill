@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="{% static 'images/logo1.ico' %}" />
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+  <title>EasyBill: Login</title>
+</head>
+
+<body>
+  {% if messages %} {% for message in messages %}
+  <script>
+    alert("{{message}}");
+  </script>
+  {% endfor %} {% endif %} {% if error %}
+  <script>
+    alert("{{error}}");
+  </script>
+  {% endif %}
+  <div class="container">
+    <div class="logo">
+      <img src="{% static 'images/logo_banner.png' %}" alt="logo" />
+    </div>
+    <h1>Login</h1>
+    <form action="{%url 'login'%}" method="post">
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="Username" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <input type="submit" value="Login" />
+    </form>
+    <div class="creator">
+      <p>- Created by Sandeep Ruttala -</p>
+      <div class="links">
+        <a href="https://www.github.com/sandeepruttala" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/sandeep-ruttala/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://www.instagram.com/sandeepruttala/" target="_blank"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="copyrights">
+    <p>© 2024 EasyBill. All Rights Reserved.</p>
+  </div>
+  <script src="https://kit.fontawesome.com/b562ad32cf.js" crossorigin="anonymous"></script>
+  <script></script>
+</body>
+
+</html>
