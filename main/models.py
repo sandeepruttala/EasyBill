@@ -9,9 +9,15 @@ class Table(models.Model):
     def __str__(self):
         return self.table_name
 
+class Category(models.Model):
+    category_name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.category_name
+
 class Item(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,default='')
 
     def __str__(self):
         return self.name

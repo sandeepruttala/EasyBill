@@ -21,4 +21,6 @@ urlpatterns = [
     path('delete_table/',views.delete_table,name='delete_table' ),
     path('add_table/',views.add_table,name='add_table' ),
     path('view-menu/',views.view_menu,name='view-menu' ),
+    path('fetch_menu/',views.fetch_menu,name='fetch_menu' ),
+    path('fetch_categories/',views.fetch_categories,name='fetch_categories' ),
 ]

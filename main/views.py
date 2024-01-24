@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from users.models import CustomUser
-from .models import Table, Item, Order, OrderHistory
+from .models import Table, Item, Order, OrderHistory, Category
 from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout
@@ -167,3 +167,25 @@ def view_menu(request):
         return render(request, 'view-menu.html')
     else:
         return redirect('login')
+    
+def fetch_menu(request):
+    items = Item.objects.all()
+    data = []
+    for i in items:
+        data.append({
+            'name': i.name,
+            'price': i.price,
+            'category': i.category.category_name,
+            'id': i.id,
+        })
+    return JsonResponse({'data': data})
+
+def fetch_categories(request):
+    categories = Category.objects.all()
+    data = []
+    for i in categories:
+        data.append({
+            'category_name': i.category_name,
+            'id': i.id,
+        })
+    return JsonResponse({'data': data})
