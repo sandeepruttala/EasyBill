@@ -178,6 +178,8 @@ def fetch_menu(request):
             'category': i.category.category_name,
             'id': i.id,
         })
+    data.sort(key=lambda x: x['category'])    
+    # print(data)
     return JsonResponse({'data': data})
 
 def fetch_categories(request):

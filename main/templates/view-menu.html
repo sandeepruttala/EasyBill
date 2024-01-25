@@ -86,6 +86,8 @@
             width: 100%;
             min-height: 100vh;
             margin-top: 100px;
+            margin-bottom: 50px;
+
         }
 
         .heading {
@@ -99,10 +101,6 @@
         .heading p {
             font-size: 30px;
             color: rgb(70, 70, 70);
-        }
-
-        .main {
-            min-height: 100vh;
         }
 
         .menu {
@@ -210,6 +208,22 @@
                 margin-top: 65px;
             }
 
+            .heading p {
+                font-size: 25px;
+            }
+
+            .menu table {
+                width: 80%;
+            }
+
+            .menu table th {
+                font-size: 20px;
+            }
+
+            .menu table td {
+                font-size: 15px;
+            }
+
             footer {
                 height: 90px;
             }
@@ -251,37 +265,8 @@
             <p><i class="fa-solid fa-scroll"></i>&nbsp;&nbsp;View Menu</p>
         </div>
         <div class="menu">
-            <!-- dynamic -->
             <table class="table">
-                <tr>
-                    <th colspan="2">Biriyani's</th>
-                </tr>
-                <tr class="item">
-                    <td>Item</td>
-                    <td>Price</td>
-                </tr>
-                <tr>
-                    <td>Chicken Biriyani</td>
-                    <td>180/-</td>
-                </tr>
-                <tr>
-                    <td>Mutton Biriyani</td>
-                    <td>250/-</td>
-                </tr>
-                <tr>
-                    <th colspan="2">Deserts</th>
-                </tr>
-                <tr class="item">
-                    <td>Item</td>
-                    <td>Price</td>
-                <tr>
-                    <td>Ice Cream</td>
-                    <td>50/-</td>
-                </tr>
-                <tr>
-                    <td>Drinks</td>
-                    <td>30/-</td>
-                </tr>
+                <!-- dynamic -->
             </table>
         </div>
     </div>
@@ -302,36 +287,21 @@
     </footer>
     <script src="https://kit.fontawesome.com/b562ad32cf.js" crossorigin="anonymous"></script>
     <script>
-        // function fetch_categories() {
-        //     fetch(`/fetch_categories/`)
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             let categories = {};
-        //             data.data.forEach(category => {
-        //                 categories[category.category_name] = {}
-        //             });
-        //             console.log(categories);
-        //             return categories;
-        //         });
-        // }
         function fetch_menu() {
             fetch(`/fetch_menu/`)
                 .then(response => response.json())
                 .then(data => {
-                    //categories 
-                    let categories = {};
-                    fetch(`/fetch_categories/`)
-                        .then(response => response.json())
-                        .then(data => {
-                            data.data.forEach(category => {
-                                categories[category.category_name] = []
-                            });
-                        });
-                    console.log(categories);
-                    console.log(data);
-                    //items
+                    const table = document.querySelector('.table');
+                    let temp = data.data[0].category;
+                    table.innerHTML += `<tr><th colspan="2">${temp}</th></tr>`;
+                    table.innerHTML += `<tr class="item"><td>Item</td><td>Price</td></tr>`;
                     data.data.forEach(item => {
-                        categories[item.category].push(item);
+                        if (temp != item.category) {
+                            table.innerHTML += `<tr><th colspan="2">${item.category}</th></tr>`;
+                            table.innerHTML += `<tr class="item"><td>Item</td><td>Price</td></tr>`;
+                        }
+                        table.innerHTML += `<tr><td>${item.name}</td><td>${item.price}/-</td></tr>`;
+                        temp = item.category;
                     });
                 });
         }
