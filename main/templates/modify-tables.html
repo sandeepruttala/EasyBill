@@ -225,6 +225,7 @@
             width: 100%;
             height: 100vh;
             background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
             position: fixed;
             top: 0;
             left: 0;
@@ -475,7 +476,7 @@
                 height: 40px;
                 border: 1px solid #d8d7d7;
                 outline: none;
-                background-color: white;
+                background-color: white;    
                 color: black;
                 font-size: 16px;
                 font-weight: 500;
@@ -589,7 +590,7 @@
                 alert('Please enter a valid table number');
                 return;
             }
-            fetch(`/add_table/?table_number=${table_number}`)
+            fetch(`/add_table/${table_number}/`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.status == 'success') {

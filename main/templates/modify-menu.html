@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'images/logo1.ico' %}" />
+    <title>EasyBill: Modify menu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: white;
+        }
+
+        header {
+            width: 100%;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            padding: 0 30px;
+            margin: 0 10px;
+        }
+
+        .nav-links ul {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            list-style: none;
+        }
+
+        .nav-links ul li a {
+            color: black;
+            font-size: 18px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .nav-links ul li a:hover {
+            color: #ff4a4a;
+        }
+
+        .logo img {
+            width: 200px;
+            height: 80px;
+        }
+
+        .back a {
+            color: black;
+            font-size: 18px;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 50%;
+        }
+
+        .back a:hover {
+            color: #498fffe1;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            min-height: 100vh;
+            margin-top: 100px;
+            margin-bottom: 50px;
+
+        }
+
+        .heading {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .heading p {
+            font-size: 30px;
+            color: rgb(70, 70, 70);
+        }
+
+        .menu {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu table {
+            width: 60%;
+        }
+
+        .menu table th {
+            font-size: 25px;
+            color: white;
+            background-color: #2c7bfae1;
+        }
+
+        .menu table td {
+            width: 50%;
+            text-align: center;
+            font-size: 20px;
+            padding: 5px 40px;
+            border: 1px solid #2c7bfae1;
+        }
+
+        .menu table th i, .menu table td i{
+            color: #ff4a4a;
+            font-size: 15px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .item {
+            background-color: rgb(220, 220, 220);
+            border: 1px solid #2c7bfae1;
+        }
+
+        .buttons {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .add-category {
+            margin: 10px;
+        }
+
+        .add-category-btn {
+            width: 150px;
+            height: 50px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            background-color: #2c7bfae1;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .add-category-btn:hover {
+            background-color: #2c7bfa;
+        }
+
+        .add-item {
+            margin: 10px;
+        }
+
+        .add-item-btn {
+            width: 150px;
+            height: 50px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            background-color: #2c7bfae1;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .add-item-btn:hover {
+            background-color: #2c7bfa;
+        }
+
+        .popup {
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: none;
+        }
+
+        .popup-content {
+            width: 400px;
+            height: fit-content;
+            padding-top: 30px;
+            background-color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .popup-content h1 {
+            font-size: 25px;
+            color: #2c7bfa;
+            margin-bottom: 20px;
+        }
+
+        .popup-content input {
+            width: 300px;
+            height: 50px;
+            border: 1px solid #2c7bfa;
+            outline: none;
+            border-radius: 5px;
+            padding: 0 10px;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .popup-content select {
+            width: 300px;
+            height: 50px;
+            border: 1px solid #2c7bfa;
+            outline: none;
+            border-radius: 5px;
+            padding: 0 10px;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .popup-content .buttons {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content .buttons button {
+            width: 120px;
+            height: 50px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            background-color: #2c7bfae1;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 0 10px;
+        }
+
+        .popup-content .buttons button:hover {
+            background-color: #2c7bfa;
+        }
+
+
+        footer {
+            width: 100%;
+            height: 100px;
+            background-color: rgb(240, 240, 240);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .creator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .creator p {
+            font-size: 14px;
+            color: #838383;
+        }
+
+        .links {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .links a {
+            margin: 0 10px;
+            color: #838383;
+            font-size: 15px;
+        }
+
+        .links a:hover {
+            color: #333;
+        }
+
+        .links a i {
+            transition: 0.3s;
+        }
+
+        .links a:hover i {
+            transform: scale(1.2);
+        }
+
+        .copyrights p {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                height: 65px;
+            }
+
+            nav {
+                padding: 0 10px;
+            }
+
+            nav span {
+                display: none;
+            }
+
+            .logo img {
+                width: 150px;
+                height: 60px;
+            }
+
+            .main {
+                margin-top: 65px;
+            }
+
+            .heading p {
+                font-size: 25px;
+            }
+
+            .menu table {
+                width: 80%;
+            }
+
+            .menu table th {
+                font-size: 20px;
+            }
+
+            .menu table td {
+                font-size: 15px;
+            }
+
+            .buttons button {
+                width: 120px;
+                height: 40px;
+                margin: 10px 0;
+            }
+
+            .popup-content {
+                width: 300px;
+            }
+
+            .popup-content h1 {
+                font-size: 20px;
+            }
+
+            .popup-content input {
+                width: 250px;
+                height: 40px;
+                font-size: 15px;
+            }
+
+            .popup-content select {
+                width: 250px;
+                height: 40px;
+                font-size: 15px;
+            }
+
+            .popup-content .buttons button {
+                width: 100px;
+                height: 40px;
+                font-size: 15px;
+            }
+
+            footer {
+                height: 90px;
+            }
+
+            .creator p {
+                font-size: 15px;
+            }
+
+            .links a {
+                font-size: 15px;
+            }
+
+            .links a i {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="back">
+                <a href="{% url 'back-home' %}"><i class="fas fa-arrow-left"></i>&nbsp;<span>Back</span></a>
+            </div>
+            <div class="logo">
+                <img src="{% static 'images/logo_banner.png' %}" alt="logo" />
+            </div>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="{% url 'logout' %}"><i
+                                class="fa-solid fa-right-from-bracket"></i>&nbsp;<span>Logout</span></a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="main">
+        <div class="heading">
+            <p><i class="fa-solid fa-gears"></i>&nbsp;&nbsp;Modify Menu</p>
+        </div>
+        <div class="menu">
+            <table class="table">
+                <!-- dynamic -->
+            </table>
+        </div>
+    </div>
+    <div class="buttons">
+        <!-- add category -->
+        <div class="add-category">
+            <button onclick="category_popup()" class="add-category-btn"><i class="fas fa-plus"></i>&nbsp;Category</button>
+        </div>
+        <!-- add item -->
+        <div class="add-item">
+            <button onclick="item_popup()" class="add-item-btn"><i class="fas fa-plus"></i>&nbsp;Item</button>
+        </div>
+    </div>
+    <div class="categoryp popup">
+        <div class="popup-content">
+            <h1>Add Category</h1>
+            <input type="text" name="category" id="category" placeholder="Category Name" />
+            <div class="buttons">
+                <button onclick="add_category()" class="add-category-btn"><i class="fas fa-plus"></i>&nbsp;Add</button>
+                <button onclick="close_popup()" style="background-color: #ff4a4a;" class="add-category-btn"><i class="fas fa-times"></i>&nbsp;Close</button>
+            </div>
+        </div>
+    </div>
+    <div class="itemp popup">
+        <div class="popup-content">
+            <h1>Add Item</h1>
+            <input type="text" name="item" id="item" placeholder="Item Name" />
+            <select name="category" id="category1">
+                <option value = "" >Select Category</option>
+                <!-- dynamic -->
+            </select>
+            <input type="number" name="price" id="price" placeholder="Price" />
+            <div class="buttons">
+                <button onclick="add_item()" class="add-item-btn"><i class="fas fa-plus"></i>&nbsp;Add</button>
+                <button onclick="close_popup()" style="background-color: #ff4a4a;" class="add-item-btn"><i class="fas fa-times"></i>&nbsp;Close</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="creator">
+            <p>- Created by Sandeep Ruttala -</p>
+            <div class="links">
+                <a href="https://www.github.com/sandeepruttala" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/sandeep-ruttala/" target="_blank"><i
+                        class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/sandeepruttala/" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        </div>
+        <div class="copyrights">
+            <p>© 2024 EasyBill. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script src="https://kit.fontawesome.com/b562ad32cf.js" crossorigin="anonymous"></script>
+    <script>
+        function category_popup() {
+            document.querySelector('.categoryp').style.display = 'flex';
+        }
+
+        function item_popup() {
+            document.querySelector('.itemp').style.display = 'flex';
+            fetch(`/fetch_categories/`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const select = document.querySelector('.itemp select');
+                    // select.innerHTML = `<option value = "" >--Select Category--</option>`;
+                    data.data.forEach(item => {
+                        select.innerHTML += `<option value="${item.category_name}">${item.category_name}</option>`;
+                    });
+                });
+        }
+
+        function close_popup() {
+            document.querySelector('.categoryp').style.display = 'none';
+            document.querySelector('.itemp').style.display = 'none';
+        }
+
+        function add_category() {
+            const category = document.querySelector('#category').value;
+            if (category == '') {
+                alert('Please enter category name');
+            } else {
+                fetch(`/add_category/${category}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status == 'success') {
+                            alert('Category added successfully');
+                            location.reload();
+                        } else {
+                            alert('Category already exists');
+                        }
+                    });
+            }
+        }
+
+        function add_item() {
+            const item = document.querySelector('#item').value;
+            const category = document.querySelector('#category1').value;
+            const price = document.querySelector('#price').value;
+            console.log(item, category, price);
+            if (item === '' || category === '' || price === '') {
+                alert('Please enter all the details');
+            } else {
+                fetch(`/add_item/${item}/${category}/${price}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status == 'success') {
+                            alert('Item added successfully');
+                            location.reload();
+                        } else {
+                            alert('Item already exists');
+                        }
+                    });
+            }
+        }
+
+        function delete_category(id) {
+            if (confirm('Are you sure you want to delete this category?')) {
+                fetch(`/delete_category/${id}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status == 'success') {
+                            alert('Category deleted successfully');
+                            location.reload();
+                        } else {
+                            alert('Something went wrong');
+                        }
+                    });
+            }
+        }
+
+        function delete_item(id) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                fetch(`/delete_item/${id}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status == 'success') {
+                            alert('Item deleted successfully');
+                            location.reload();
+                        } else {
+                            alert('Something went wrong');
+                        }
+                    });
+            }
+        }
+
+        function fetch_menu() {
+            fetch(`/fetch_menu/`)
+                .then(response => response.json())
+                .then(data => {
+                    const table = document.querySelector('.table');
+                    let temp = data.data[0].category;
+                    table.innerHTML += `<tr><th colspan="2" id="${temp}">${temp}&nbsp;&nbsp;<buuton onclick="delete_category(${data.data[0].id})"><i class="fa-solid fa-trash-can"></i></button></th></tr>`;
+                    table.innerHTML += `<tr class="item"><td>Item</td><td>Price</td></tr>`;
+                    data.data.forEach(item => {
+                        if (temp != item.category) {
+                            table.innerHTML += `<tr><th colspan="2" id="${item.category}">${item.category}&nbsp;&nbsp;<buuton onclick="delete_category(${item.id})"><i class="fa-solid fa-trash-can"></i></button></th></tr>`;
+                            table.innerHTML += `<tr class="item"><td>Item</td><td>Price</td></tr>`;
+                        }
+                        table.innerHTML += `<tr><td id="${item.id}">${item.name}&nbsp;&nbsp;<buuton onclick="delete_item(${item.id})"><i class="fa-solid fa-trash-can"></i></button></td><td>${item.price}/-</td></tr>`;
+                        temp = item.category;
+                    });
+                });
+        }
+        fetch_menu();
+    </script>
+</body>
+
+</html>

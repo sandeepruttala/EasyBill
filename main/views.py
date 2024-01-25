@@ -20,6 +20,8 @@ def links(request, links):
         return view_staff(request)
     elif links == 'view_menu':
         return view_menu(request)
+    elif links == 'modify_menu':
+        return modify_menu(request)
 
 def login_(request):
     if request.method == 'POST':
@@ -150,14 +152,12 @@ def delete_table(request):
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
 
-def add_table(request):
+def add_table(request, table_number):
     if request.method == 'GET':
-        table_number = request.GET.get('table_number','')
-        table_name = 'Table'+str(table_number)
         if Table.objects.filter(table_number=table_number).exists():
             return JsonResponse({'status': 'error'})
         else:
-            Table.objects.create(table_number=table_number, table_name=table_name)
+            Table.objects.create(table_number=table_number, table_name='Table'+str(table_number))
             return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
 
@@ -191,3 +191,41 @@ def fetch_categories(request):
             'id': i.id,
         })
     return JsonResponse({'data': data})
+
+def modify_menu(request):
+    user = request.user
+    if user.is_authenticated and user.is_staff:
+        return render(request, 'modify-menu.html')
+    else:
+        return redirect('login')
+     
+def add_category(request, category):
+    if request.method == 'GET':
+        if Category.objects.filter(category_name__iexact=category).exists():
+            return JsonResponse({'status': 'error'})
+        else:
+            Category.objects.create(category_name=category)
+            return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})
+
+def add_item(request, item, category, price):
+    if request.method == 'GET':
+        if Item.objects.filter(name__iexact=item).exists():
+            return JsonResponse({'status': 'error'})
+        else:
+            category = Category.objects.get(category_name=category)
+            Item.objects.create(name=item, price=price, category=category)
+            return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})
+
+def delete_category(request, id):
+    if request.method == 'GET':
+        Category.objects.filter(id=id).delete()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})
+
+def delete_item(request, id):
+    if request.method == 'GET':
+        Item.objects.filter(id=id).delete()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})
