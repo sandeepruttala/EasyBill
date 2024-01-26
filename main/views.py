@@ -288,3 +288,9 @@ def delete_order(request, table_number, item_name, quantity):
         Order.objects.filter(table__table_number=table_number, item__name=item_name, quantity=quantity).delete()
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
+
+def clear_data(request, table_number):
+    if request.method == 'GET':
+        Order.objects.filter(table__table_number=table_number).delete()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})

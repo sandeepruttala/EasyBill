@@ -87,6 +87,18 @@
             min-height: 100vh;
         }
 
+        .buttons {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .main .buttons button {
+            margin: 0 10px;
+        }
+
         .top {
             width: 100%;
             display: flex;
@@ -356,7 +368,7 @@
 
             .popup-content {
                 width: 300px;
-                height: 300px;
+                height: 350px;
             }
 
             .popup-content h1 {
@@ -400,7 +412,7 @@
     <header>
         <nav>
             <div class="back">
-                <a href="{% url 'back-home' %}"><i class="fas fa-arrow-left"></i>&nbsp;<span>Back</span></a>
+                <a href="{% url 'links' 'view_tables' %}"><i class="fas fa-arrow-left"></i>&nbsp;<span>Back</span></a>
             </div>
             <div class="logo">
                 <img src="{% static 'images/logo_banner.png' %}" alt="logo" />
@@ -416,7 +428,14 @@
     <div class="main">
         <div class="top">
             <h1>{{ table.table_name }}</h1>
-            <button onclick="open_popup()"><i class="fas fa-plus"></i>&nbsp;item</button>
+            <div class="buttons">
+                <button onclick="open_popup()"><i class="fas fa-plus"></i>&nbsp;items</button>
+                <button onclick="clear_data()" style="background-color: #ff4a4a;"
+                ><i class="fas fa-times"></i>&nbsp;clear</button>
+            </div>
+            <div class="total">
+                <h1>Total: Rs.<span id="total">0.00</span>/-</h1>
+            </div>
         </div>
         <div class="table">
             <table class="orders">
@@ -433,7 +452,7 @@
     </div>
     <div class="popup">
         <div class="popup-content">
-            <h1>Add Item</h1>
+            <h1>Add Items</h1>
             <select name="category" id="category">
                 <option value="">Select Category</option>   
                 <!-- dynamic -->
@@ -485,9 +504,9 @@
     });
     </script>
     <script>
-        const base = window.location.origin;
-        function close_notification() {
-            document.querySelector(".notification").style.display = "none";
+        let sum = 0.00;
+        function update_total() {
+            document.querySelector('#total').innerHTML = sum;
         }
         function open_popup() {
             document.querySelector(".popup").style.display = "flex";
@@ -534,6 +553,8 @@
                 .then(data => {
                     cell2.innerHTML = data.data.price
                     cell4.innerHTML = data.data.price * quantity;
+                    sum += data.data.price * quantity;
+                    update_total();
                 });
             cell1.innerHTML = item;
             cell3.innerHTML = quantity;
@@ -545,7 +566,6 @@
                 .then(data => {
                     console.log(data);
                 });
-
             close_popup();
         }
 
@@ -561,6 +581,8 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
+                    sum -= amount;
+                    update_total();
                 });
         }
 
@@ -587,8 +609,29 @@
                             .then(data => {
                                 cell2.innerHTML = data.data.price
                                 cell4.innerHTML = data.data.price * item.quantity;
+                                sum += data.data.price * item.quantity;
+                                update_total();
                             });
                     });
+                });
+        }
+        function clear_data()
+        {
+            const table_number = `{{ table.table_number }}`;
+            fetch(`/clear_data/${table_number}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const table = document.querySelector('.orders');
+                    table.innerHTML = `<tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>`;
+                    sum = 0.00;
+                    update_total();
                 });
         }
         fetch_orders();
