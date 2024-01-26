@@ -28,4 +28,6 @@ urlpatterns = [
     path('add_category/<str:category>/',views.add_category,name='add_category' ),
     path('delete_category/<int:id>/',views.delete_category,name='delete_category' ),
     path('delete_item/<int:id>/',views.delete_item,name='delete_item' ),
+    path('order/<str:table_name>',views.order,name='order' ),
+    path('fetch_items/<str:category_name>',views.fetch_items,name='fetch_items' ),
 ]

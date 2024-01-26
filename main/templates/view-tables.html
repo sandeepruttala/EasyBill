@@ -417,6 +417,8 @@
                     return a.table_number - b.table_number;
                 })
                 data.data.forEach(table => {
+                    const base_url = window.location.origin;
+                    let url = base_url+'/order/'+ table.table_name;
                     cards.innerHTML += `
                     <div class="card">
                         <div class="card-image">
@@ -428,7 +430,7 @@
                                 <h1>${table.table_name}</h1>
                             </div>
                             <div class="card-button">
-                                <a href="*"><button><i class="fa-solid fa-arrow-up-right-from-square"></i><span>&nbsp;Orders</span></button></a>
+                                <a href="${url}"><button><i class="fa-solid fa-arrow-up-right-from-square"></i><span>&nbsp;Orders</span></button></a>
                             </div>
                         </div>
                     </div>

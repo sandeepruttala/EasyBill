@@ -9,7 +9,7 @@ from django.urls import reverse
 def home(request):
     return render(request, 'index.html')
 
-def links(request, links):
+def links(request, links, id=None):
     if links == 'view_tables':
         return view_tables(request)
     elif links == 'modify_tables':
@@ -22,6 +22,8 @@ def links(request, links):
         return view_menu(request)
     elif links == 'modify_menu':
         return modify_menu(request)
+    elif links == 'order' and id:
+        return order(request)
 
 def login_(request):
     if request.method == 'POST':
@@ -229,3 +231,24 @@ def delete_item(request, id):
         Item.objects.filter(id=id).delete()
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
+
+def order(request, table_name):
+    user = request.user
+    table = Table.objects.get(table_name=table_name)
+    print(table.table_name)
+    if user.is_authenticated and user.is_staff:
+        return render(request, 'order.html', {'table': table})
+    else:
+        return redirect('login')
+
+def fetch_items(request, category_name):
+    print(category_name)
+    items = Item.objects.filter(category__category_name=category_name)
+    data = []
+    for i in items:
+        data.append({
+            'name': i.name,
+            'price': i.price,
+            'id': i.id,
+        })
+    return JsonResponse({'data': data})

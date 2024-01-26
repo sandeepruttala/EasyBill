@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{% static 'images/logo1.ico' %}" />
+    <title>EasyBill: Modify menu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: white;
+        }
+
+        header {
+            width: 100%;
+            height: 100px;
+            background-color: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            padding: 0 30px;
+            margin: 0 10px;
+        }
+
+        .nav-links ul {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            list-style: none;
+        }
+
+        .nav-links ul li a {
+            color: black;
+            font-size: 18px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .nav-links ul li a:hover {
+            color: #ff4a4a;
+        }
+
+        .logo img {
+            width: 200px;
+            height: 80px;
+        }
+
+        .back a {
+            color: black;
+            font-size: 18px;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 50%;
+        }
+
+        .back a:hover {
+            color: #498fffe1;
+        }
+
+        .main {
+            margin-top: 130px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .top {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 30px;
+        }
+
+        .top h1 {
+            font-size: 40px;
+            font-weight: 700;
+            color: #333;
+            margin: 0 20px;
+        }
+
+        .top button {
+            padding: 10px 20px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            background-color: #0062ffe1;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 0 20px;
+        }
+
+        .top button:hover {
+            background-color: #0062ff;
+        }
+
+        .table {
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .table table {
+            width: 60%;
+            border-collapse: collapse;
+            text-align: center;
+            border: 1px solid #333;
+        }
+
+        .table table tr th {
+            border: 1px solid #333;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .table table tr td {
+            padding: 10px 0;
+            border: 1px solid #333;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 400;
+            color: #333;
+        }
+
+        .table table tr td button {
+            padding: 5px 10px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            background-color: #ff4a4a;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .table table tr td button:hover {
+            background-color: #ff4a4a;
+        }
+
+        .popup {
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            width: 400px;
+            height: 400px;
+            background-color: white;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .popup-content h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .popup-content select {
+            width: 80%;
+            height: 50px;
+            border: 1px solid #333;
+            outline: none;
+            border-radius: 5px;
+            padding: 0 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 400;
+            color: #333;
+        }
+
+        .popup-content input {
+            width: 80%;
+            height: 50px;
+            border: 1px solid #333;
+            outline: none;
+            border-radius: 5px;
+            padding: 0 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 400;
+            color: #333;
+        }
+
+        .popup-content .buttons {
+            width: 80%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popup-content .buttons button {
+            padding: 10px 20px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+            background-color: #0062ffe1;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .popup-content .buttons button:hover {
+            background-color: #0062ff;
+        }
+
+
+        footer {
+            width: 100%;
+            height: 100px;
+            background-color: rgb(240, 240, 240);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .creator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .creator p {
+            font-size: 14px;
+            color: #838383;
+        }
+
+        .links {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .links a {
+            margin: 0 10px;
+            color: #838383;
+            font-size: 15px;
+        }
+
+        .links a:hover {
+            color: #333;
+        }
+
+        .links a i {
+            transition: 0.3s;
+        }
+
+        .links a:hover i {
+            transform: scale(1.2);
+        }
+
+        .copyrights p {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                height: 65px;
+            }
+
+            nav {
+                padding: 0 10px;
+            }
+
+            nav span {
+                display: none;
+            }
+
+            .logo img {
+                width: 150px;
+                height: 60px;
+            }
+
+            footer {
+                height: 90px;
+            }
+
+            .creator p {
+                font-size: 15px;
+            }
+
+            .links a {
+                font-size: 15px;
+            }
+
+            .links a i {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="back">
+                <a href="{% url 'back-home' %}"><i class="fas fa-arrow-left"></i>&nbsp;<span>Back</span></a>
+            </div>
+            <div class="logo">
+                <img src="{% static 'images/logo_banner.png' %}" alt="logo" />
+            </div>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="{% url 'logout' %}"><i
+                                class="fa-solid fa-right-from-bracket"></i>&nbsp;<span>Logout</span></a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="main">
+        <div class="top">
+            <h1><i class="fas fa-utensils"></i>&nbsp;{{ table.table_name }}</h1>
+            <button onclick="open_popup()"><i class="fas fa-plus"></i>&nbsp;item</button>
+        </div>
+        <div class="table">
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>
+                <!-- sample -->
+                <tr>
+                    <td>Chicken Biryani</td>
+                    <td>150</td>
+                    <td>2</td>
+                    <td>300</td>
+                    <td>
+                        <button onclick="delete_item()"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+                <!-- total -->
+                <tr>
+                    <td colspan="3">Total</td>
+                    <td colspan="2">300</td>
+                <tr>
+            </table>
+        </div>
+    </div>
+    <div class="popup">
+        <div class="popup-content">
+            <h1>Add Item</h1>
+            <select name="category" id="category">
+                <option value="">Select Category</option>   
+                <!-- dynamic -->
+            </select>
+            <select name="item" id="item">
+                <option value="">Select Item</option>
+                <!-- dynamic -->
+            </select>
+            <input type="number" name="quantity" id="quantity" placeholder="Quantity" />
+            <div class="buttons">
+                <button onclick="add_item()"><i class="fas fa-plus"></i>&nbsp;Add</button>
+                <button onclick="close_popup()" style="background-color: #ff4a4a;"
+                ><i class="fas fa-times"></i>&nbsp;Cancel</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="creator">
+            <p>- Created by Sandeep Ruttala -</p>
+            <div class="links">
+                <a href="https://www.github.com/sandeepruttala" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/sandeep-ruttala/" target="_blank"><i
+                        class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/sandeepruttala/" target="_blank"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        </div>
+        <div class="copyrights">
+            <p>© 2024 EasyBill. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script src="https://kit.fontawesome.com/b562ad32cf.js" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const categoryDropdown = document.querySelector('#category');
+
+        categoryDropdown.addEventListener('change', function() {
+            const selectedCategory = categoryDropdown.value;
+            fetch(`/fetch_items/${selectedCategory}`)
+                .then(response => response.json())
+                .then(data => {
+                    const itemDropdown = document.querySelector('#item');
+                    data.data.forEach(item => {
+                        itemDropdown.innerHTML += `<option value="${item.name}">${item.name}</option>`;
+                    });
+                });
+        });
+    });
+    </script>
+    <script>
+        function open_popup() {
+            document.querySelector(".popup").style.display = "flex";
+            fetch(`/fetch_categories/`)
+                .then(response => response.json())
+                .then(data => {
+                    const select = document.querySelector('.popup-content #category');
+                    data.data.forEach(item => {
+                        select.innerHTML += `<option value="${item.category_name}">${item.category_name}</option>`;
+                    });
+                });
+        }
+
+        function close_popup() {
+            document.querySelector(".popup").style.display = "none";
+        }
+
+        function add_item() {
+            // add item to table
+        }
+
+        function delete_item() {
+            // delete item from table
+        }
+    </script>
+
+</body>
+
+</html>
