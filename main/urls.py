@@ -30,4 +30,8 @@ urlpatterns = [
     path('delete_item/<int:id>/',views.delete_item,name='delete_item' ),
     path('order/<str:table_name>',views.order,name='order' ),
     path('fetch_items/<str:category_name>',views.fetch_items,name='fetch_items' ),
+    path('fetch_item/<str:item_name>',views.fetch_item,name='fetch_item' ),
+    path('add_order/<int:table_number>/<str:item_name>/<int:quantity>',views.add_order,name='add_order'),    
+    path('delete_order/<int:table_number>/<str:item_name>/<int:quantity>',views.delete_order,name='delete_order'),
+    path('fetch_orders/<int:table_number>',views.fetch_orders,name='fetch_orders'),
 ]

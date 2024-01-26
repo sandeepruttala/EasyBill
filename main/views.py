@@ -235,14 +235,14 @@ def delete_item(request, id):
 def order(request, table_name):
     user = request.user
     table = Table.objects.get(table_name=table_name)
-    print(table.table_name)
+    # print(table.table_name)
     if user.is_authenticated and user.is_staff:
         return render(request, 'order.html', {'table': table})
     else:
         return redirect('login')
 
 def fetch_items(request, category_name):
-    print(category_name)
+    # print(category_name)
     items = Item.objects.filter(category__category_name=category_name)
     data = []
     for i in items:
@@ -252,3 +252,39 @@ def fetch_items(request, category_name):
             'id': i.id,
         })
     return JsonResponse({'data': data})
+
+def fetch_item(request, item_name):
+    item = Item.objects.get(name=item_name)
+    data = {
+        'name': item.name,
+        'price': item.price,
+        'id': item.id,
+    }
+    # print(data)
+    return JsonResponse({'data': data})
+
+def add_order(request, table_number, item_name, quantity):
+    if request.method == 'GET':
+        table = Table.objects.get(table_number=table_number)
+        item = Item.objects.get(name=item_name)
+        Order.objects.create(table=table, item=item, quantity=quantity)
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})
+
+def fetch_orders(request, table_number):
+    orders = Order.objects.filter(table__table_number=table_number)
+    data = []
+    for i in orders:
+        data.append({
+            'order_id': i.order_id,
+            'table': i.table.table_number,
+            'item': i.item.name,
+            'quantity': i.quantity,
+        })
+    return JsonResponse({'data': data})
+
+def delete_order(request, table_number, item_name, quantity):
+    if request.method == 'GET':
+        Order.objects.filter(table__table_number=table_number, item__name=item_name, quantity=quantity).delete()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})

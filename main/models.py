@@ -24,8 +24,10 @@ class Item(models.Model):
 
 class Order(models.Model):
     order_id = models.AutoField(primary_key=True)
-    table_number = models.ForeignKey(Table, on_delete=models.CASCADE)
+    order_name = "Order"+str(order_id)
+    table = models.ForeignKey(Table, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
 
     def __str__(self):
         return self.order_name
@@ -33,7 +35,7 @@ class Order(models.Model):
 class OrderHistory(models.Model):
     order_id = models.AutoField(primary_key=True)
     order_name = "Order"+str(order_id)
-    table_number = models.ForeignKey(Table, on_delete=models.CASCADE)
+    table = models.ForeignKey(Table, on_delete=models.CASCADE)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
 

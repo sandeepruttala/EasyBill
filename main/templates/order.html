@@ -92,6 +92,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             padding: 0 30px;
         }
 
@@ -99,7 +100,7 @@
             font-size: 40px;
             font-weight: 700;
             color: #333;
-            margin: 0 20px;
+            margin: 20px 20px;
         }
 
         .top button {
@@ -199,7 +200,7 @@
             font-size: 30px;
             font-weight: 700;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .popup-content select {
@@ -236,6 +237,7 @@
         }
 
         .popup-content .buttons button {
+            width: 48%;
             padding: 10px 20px;
             border: none;
             outline: none;
@@ -251,7 +253,6 @@
         .popup-content .buttons button:hover {
             background-color: #0062ff;
         }
-
 
         footer {
             width: 100%;
@@ -324,6 +325,58 @@
                 height: 60px;
             }
 
+            .main {
+                margin-top: 80px;
+            }
+
+
+            .top h1 {
+                font-size: 30px;
+            }
+
+            .top button {
+                font-size: 16px;
+            }
+
+            .table table {
+                width: 90%;
+            }
+
+            .table table tr th {
+                font-size: 13px;
+            }
+
+            .table table tr td {
+                font-size: 13px;
+            }
+
+            .table table tr td button {
+                font-size: 13px;
+            }
+
+            .popup-content {
+                width: 300px;
+                height: 300px;
+            }
+
+            .popup-content h1 {
+                font-size: 25px;
+            }
+
+            .popup-content select {
+                height: 40px;
+                font-size: 14px;
+            }
+
+            .popup-content input {
+                height: 40px;
+                font-size: 14px;
+            }
+
+            .popup-content .buttons button {
+                font-size: 16px;
+            }
+
             footer {
                 height: 90px;
             }
@@ -362,11 +415,11 @@
     </header>
     <div class="main">
         <div class="top">
-            <h1><i class="fas fa-utensils"></i>&nbsp;{{ table.table_name }}</h1>
+            <h1>{{ table.table_name }}</h1>
             <button onclick="open_popup()"><i class="fas fa-plus"></i>&nbsp;item</button>
         </div>
         <div class="table">
-            <table>
+            <table class="orders">
                 <tr>
                     <th>Item</th>
                     <th>Price</th>
@@ -374,21 +427,7 @@
                     <th>Amount</th>
                     <th>Actions</th>
                 </tr>
-                <!-- sample -->
-                <tr>
-                    <td>Chicken Biryani</td>
-                    <td>150</td>
-                    <td>2</td>
-                    <td>300</td>
-                    <td>
-                        <button onclick="delete_item()"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
-                <!-- total -->
-                <tr>
-                    <td colspan="3">Total</td>
-                    <td colspan="2">300</td>
-                <tr>
+                <!-- dynamic -->
             </table>
         </div>
     </div>
@@ -437,6 +476,7 @@
                 .then(response => response.json())
                 .then(data => {
                     const itemDropdown = document.querySelector('#item');
+                    itemDropdown.innerHTML = '<option value="">Select Item</option>';
                     data.data.forEach(item => {
                         itemDropdown.innerHTML += `<option value="${item.name}">${item.name}</option>`;
                     });
@@ -445,12 +485,23 @@
     });
     </script>
     <script>
+        const base = window.location.origin;
+        function close_notification() {
+            document.querySelector(".notification").style.display = "none";
+        }
         function open_popup() {
             document.querySelector(".popup").style.display = "flex";
+            const categoryDropdown = document.querySelector('#category');
+            const itemDropdown = document.querySelector('#item');
+            const quantityInput = document.querySelector('#quantity');
+            categoryDropdown.innerHTML = '<option value="">Select Category</option>';
+            itemDropdown.innerHTML = '<option value="">Select Item</option>';
+            quantityInput.value = '';
             fetch(`/fetch_categories/`)
                 .then(response => response.json())
                 .then(data => {
                     const select = document.querySelector('.popup-content #category');
+                    const item = document.querySelector('.popup-content #item');
                     data.data.forEach(item => {
                         select.innerHTML += `<option value="${item.category_name}">${item.category_name}</option>`;
                     });
@@ -463,11 +514,84 @@
 
         function add_item() {
             // add item to table
+            const category = document.querySelector('.popup-content #category').value;
+            const item = document.querySelector('.popup-content #item').value;
+            const quantity = document.querySelector('.popup-content #quantity').value;
+            const table_number = `{{ table.table_number }}`;
+            const table = document.querySelector('.orders');
+            if (category == '' || item == '' || quantity == '') {
+                alert('Please fill all the fields');
+                return;
+            }
+            const row = table.insertRow(-1);
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+            const cell4 = row.insertCell(3);
+            const cell5 = row.insertCell(4);
+            fetch(`/fetch_item/${item}`)
+                .then(response => response.json())
+                .then(data => {
+                    cell2.innerHTML = data.data.price
+                    cell4.innerHTML = data.data.price * quantity;
+                });
+            cell1.innerHTML = item;
+            cell3.innerHTML = quantity;
+            cell5.innerHTML = `<button onclick="delete_item(this)"><i class="fas fa-trash"></i></button>`;
+            //store in database
+            const eitem = encodeURIComponent(item);
+            fetch(`/add_order/${table_number}/${eitem}/${quantity}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                });
+
+            close_popup();
         }
 
-        function delete_item() {
-            // delete item from table
+        function delete_item(row) {
+            const table_number = `{{ table.table_number }}`;
+            const table = document.querySelector('.orders');
+            const i = row.parentNode.parentNode.rowIndex;
+            const item = table.rows[i].cells[0].innerHTML;
+            const quantity = table.rows[i].cells[2].innerHTML;
+            const amount = table.rows[i].cells[3].innerHTML;
+            table.deleteRow(i);
+            fetch(`/delete_order/${table_number}/${item}/${quantity}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                });
         }
+
+        function fetch_orders()
+        {
+            const table_number = `{{ table.table_number }}`;
+            fetch(`/fetch_orders/${table_number}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const table = document.querySelector('.orders');
+                    data.data.forEach(item => {
+                        const row = table.insertRow(-1);
+                        const cell1 = row.insertCell(0);
+                        const cell2 = row.insertCell(1);
+                        const cell3 = row.insertCell(2);
+                        const cell4 = row.insertCell(3);
+                        const cell5 = row.insertCell(4);
+                        cell1.innerHTML = item.item;
+                        cell3.innerHTML = item.quantity;
+                        cell5.innerHTML = `<button onclick="delete_item(this)"><i class="fas fa-trash"></i></button>`;
+                        fetch(`/fetch_item/${item.item}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                cell2.innerHTML = data.data.price
+                                cell4.innerHTML = data.data.price * item.quantity;
+                            });
+                    });
+                });
+        }
+        fetch_orders();
     </script>
 
 </body>
