@@ -39,9 +39,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'main',
     'users',
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
+
+# settings.py
+ASGI_APPLICATION = 'EasyBill.routing.application'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
