@@ -489,7 +489,19 @@
     </footer>
     <script src="https://kit.fontawesome.com/b562ad32cf.js" crossorigin="anonymous"></script>
     <script>
-        // for web sockets
+        // for web sockets  
+        var socket = new WebSocket('ws://' + window.location.host + '/ws/orders/');
+
+        socket.onmessage = function(e) {
+            var data = JSON.parse(e.data);
+            var message = data['message'];
+            // Do something with the message
+        };
+
+        socket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -511,46 +523,46 @@
     </script>
     <script>
         let sum = 0.00;
-        function socket() {
-            const current_rows = document.querySelectorAll('.orders tr');
-            const table_number = `{{ table.table_number }}`;
-            fetch(`/fetch_orders/${table_number}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (current_rows.length != data.data.length + 1) {
+        // function socket() {
+        //     const current_rows = document.querySelectorAll('.orders tr');
+        //     const table_number = `{{ table.table_number }}`;
+        //     fetch(`/fetch_orders/${table_number}`)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             if (current_rows.length != data.data.length + 1) {
                         
-                    console.log(data);
-                    const table = document.querySelector('.orders');
-                    table.innerHTML = `<tr>
-                    <th>Item</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Amount</th>
-                    <th>Actions</th>
-                </tr>`;
-                    sum = 0.00;
-                    data.data.forEach(item => {
-                        const row = table.insertRow(-1);
-                        const cell1 = row.insertCell(0);
-                        const cell2 = row.insertCell(1);
-                        const cell3 = row.insertCell(2);
-                        const cell4 = row.insertCell(3);
-                        const cell5 = row.insertCell(4);
-                        cell1.innerHTML = item.item;
-                        cell3.innerHTML = item.quantity;
-                        cell5.innerHTML = `<button onclick="delete_item(this)"><i class="fas fa-trash"></i></button>`;
-                        fetch(`/fetch_item/${item.item}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                cell2.innerHTML = data.data.price
-                                cell4.innerHTML = data.data.price * item.quantity;
-                                sum += data.data.price * item.quantity;
-                                update_total();
-                            });
-                    });
-                    }
-                });
-        }
+        //             console.log(data);
+        //             const table = document.querySelector('.orders');
+        //             table.innerHTML = `<tr>
+        //             <th>Item</th>
+        //             <th>Price</th>
+        //             <th>Quantity</th>
+        //             <th>Amount</th>
+        //             <th>Actions</th>
+        //         </tr>`;
+        //             sum = 0.00;
+        //             data.data.forEach(item => {
+        //                 const row = table.insertRow(-1);
+        //                 const cell1 = row.insertCell(0);
+        //                 const cell2 = row.insertCell(1);
+        //                 const cell3 = row.insertCell(2);
+        //                 const cell4 = row.insertCell(3);
+        //                 const cell5 = row.insertCell(4);
+        //                 cell1.innerHTML = item.item;
+        //                 cell3.innerHTML = item.quantity;
+        //                 cell5.innerHTML = `<button onclick="delete_item(this)"><i class="fas fa-trash"></i></button>`;
+        //                 fetch(`/fetch_item/${item.item}`)
+        //                     .then(response => response.json())
+        //                     .then(data => {
+        //                         cell2.innerHTML = data.data.price
+        //                         cell4.innerHTML = data.data.price * item.quantity;
+        //                         sum += data.data.price * item.quantity;
+        //                         update_total();
+        //                     });
+        //             });
+        //             }
+        //         });
+        // }
         function update_total() {
             document.querySelector('#total').innerHTML = sum;
         }
