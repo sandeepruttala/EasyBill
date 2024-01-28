@@ -3,3 +3,4 @@ env/
 .DS_STORE
 __pycache__/
 .idea/
+pages/
