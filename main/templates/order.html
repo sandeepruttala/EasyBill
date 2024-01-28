@@ -430,7 +430,7 @@
             <h1>{{ table.table_name }}</h1>
             <div class="buttons">
                 <button onclick="open_popup()"><i class="fas fa-plus"></i>&nbsp;items</button>
-                <button onclick="socket()" style="background-color: #17be17;"
+                <button onclick="update()" style="background-color: #17be17;"
                 ><i class="fas fa-sync-alt"></i>&nbsp;
                     update</button>
                 <button onclick="clear_data()" style="background-color: #ff4a4a;"
@@ -496,11 +496,33 @@
             var data = JSON.parse(e.data);
             var message = data['message'];
             // Do something with the message
+            console.log('server:',message);
+            if(message="update"){
+                update();
+                calculate_fare();
+            }
         };
 
         socket.onclose = function(e) {
             console.error('Chat socket closed unexpectedly');
         };
+
+        socket.onopen = function(e) {
+            console.log('Chat socket opened');
+        };
+        
+        function sendMessage() {
+        var message = "Hello I am Client";
+        if (socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({
+                'message': message
+            }));
+        console.log("Message sent");
+        } else {
+            console.log("Connection is not open");
+        return;
+        }
+        }
 
     </script>
     <script>
@@ -522,49 +544,50 @@
     });
     </script>
     <script>
-        let sum = 0.00;
-        // function socket() {
-        //     const current_rows = document.querySelectorAll('.orders tr');
-        //     const table_number = `{{ table.table_number }}`;
-        //     fetch(`/fetch_orders/${table_number}`)
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             if (current_rows.length != data.data.length + 1) {
-                        
-        //             console.log(data);
-        //             const table = document.querySelector('.orders');
-        //             table.innerHTML = `<tr>
-        //             <th>Item</th>
-        //             <th>Price</th>
-        //             <th>Quantity</th>
-        //             <th>Amount</th>
-        //             <th>Actions</th>
-        //         </tr>`;
-        //             sum = 0.00;
-        //             data.data.forEach(item => {
-        //                 const row = table.insertRow(-1);
-        //                 const cell1 = row.insertCell(0);
-        //                 const cell2 = row.insertCell(1);
-        //                 const cell3 = row.insertCell(2);
-        //                 const cell4 = row.insertCell(3);
-        //                 const cell5 = row.insertCell(4);
-        //                 cell1.innerHTML = item.item;
-        //                 cell3.innerHTML = item.quantity;
-        //                 cell5.innerHTML = `<button onclick="delete_item(this)"><i class="fas fa-trash"></i></button>`;
-        //                 fetch(`/fetch_item/${item.item}`)
-        //                     .then(response => response.json())
-        //                     .then(data => {
-        //                         cell2.innerHTML = data.data.price
-        //                         cell4.innerHTML = data.data.price * item.quantity;
-        //                         sum += data.data.price * item.quantity;
-        //                         update_total();
-        //                     });
-        //             });
-        //             }
-        //         });
-        // }
-        function update_total() {
-            document.querySelector('#total').innerHTML = sum;
+        function calculate_fare() {
+            const table_number = `{{ table.table_number }}`;
+            fetch(`/calculate_fare/${table_number}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const total = document.querySelector('#total');
+                    total.innerHTML = data.total;
+                });
+        }
+        function update() {
+            const current_rows = document.querySelectorAll('.orders tr');
+            const table_number = `{{ table.table_number }}`;
+            fetch(`/fetch_orders/${table_number}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const table = document.querySelector('.orders');
+                    table.innerHTML = `<tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>`;
+                    data.data.forEach(item => {
+                        const row = table.insertRow(-1);
+                        const cell1 = row.insertCell(0);
+                        const cell2 = row.insertCell(1);
+                        const cell3 = row.insertCell(2);
+                        const cell4 = row.insertCell(3);
+                        const cell5 = row.insertCell(4);
+                        cell1.innerHTML = item.item;
+                        cell3.innerHTML = item.quantity;
+                        cell5.innerHTML = `<button onclick="delete_item(this)"><i class="fas fa-trash"></i></button>`;
+                        fetch(`/fetch_item/${item.item}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                cell2.innerHTML = data.data.price
+                                cell4.innerHTML = data.data.price * item.quantity;
+                                calculate_fare();
+                            });
+                    });
+                });
         }
         function open_popup() {
             document.querySelector(".popup").style.display = "flex";
@@ -611,8 +634,8 @@
                 .then(data => {
                     cell2.innerHTML = data.data.price
                     cell4.innerHTML = data.data.price * quantity;
-                    sum += data.data.price * quantity;
-                    update_total();
+                    calculate_fare();
+                    sendMessage();
                 });
             cell1.innerHTML = item;
             cell3.innerHTML = quantity;
@@ -639,8 +662,8 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
-                    sum -= amount;
-                    update_total();
+                    calculate_fare();
+                    sendMessage();
                 });
         }
 
@@ -650,7 +673,7 @@
             fetch(`/fetch_orders/${table_number}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
+                    // console.log(data);
                     const table = document.querySelector('.orders');
                     data.data.forEach(item => {
                         const row = table.insertRow(-1);
@@ -667,8 +690,7 @@
                             .then(data => {
                                 cell2.innerHTML = data.data.price
                                 cell4.innerHTML = data.data.price * item.quantity;
-                                sum += data.data.price * item.quantity;
-                                update_total();
+                                calculate_fare();
                             });
                     });
                 });
@@ -688,13 +710,13 @@
                     <th>Amount</th>
                     <th>Actions</th>
                 </tr>`;
-                    sum = 0.00;
-                    update_total();
+                    calculate_fare();
+                    sendMessage();
                 });
         }
         fetch_orders();
-        // run socket every 5 seconds
-        // setInterval(socket, 1000);
+        calculate_fare();
+        sendMessage();
     </script>
 
 </body>

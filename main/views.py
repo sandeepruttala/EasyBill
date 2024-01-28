@@ -294,3 +294,12 @@ def clear_data(request, table_number):
         Order.objects.filter(table__table_number=table_number).delete()
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
+
+def calculate_fare(request, table_number):
+    if request.method == 'GET':
+        orders = Order.objects.filter(table__table_number=table_number)
+        total = 0
+        for i in orders:
+            total += i.item.price * i.quantity
+        return JsonResponse({'total': total})
+    return JsonResponse({'status': 'error'})

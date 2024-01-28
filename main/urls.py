@@ -35,6 +35,6 @@ urlpatterns = [
     path('add_order/<int:table_number>/<str:item_name>/<int:quantity>',views.add_order,name='add_order'),    
     path('delete_order/<int:table_number>/<str:item_name>/<int:quantity>',views.delete_order,name='delete_order'),
     path('fetch_orders/<int:table_number>',views.fetch_orders,name='fetch_orders'),
-    # fetch(`/clear_data/${table_number}`)
     path('clear_data/<int:table_number>',views.clear_data,name='clear_data'),
+    path('calculate_fare/<int:table_number>',views.calculate_fare,name='calculate_fare'),
 ]
