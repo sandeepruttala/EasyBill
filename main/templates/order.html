@@ -489,27 +489,6 @@
     </footer>
     <script src="https://kit.fontawesome.com/b562ad32cf.js" crossorigin="anonymous"></script>
     <script>
-        console.log('WebSocket URL:', 'ws://' + window.location.host + '/ws/order/');
-        const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/order/');
-
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            const message = data['message'];
-            // Handle incoming message
-        };
-
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-
-        // Send message to server
-        function sendMessage(message) {
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
-        }
-    </script>
-    <script>
         document.addEventListener('DOMContentLoaded', function() {
         const categoryDropdown = document.querySelector('#category');
 
