@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>DineSync</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'manrope', sans-serif;
+            color: white;
+            background-color: #000114;
+            background-image: url('images/bg.png');
+            background-attachment: fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .video-toggle {
+            position: fixed;
+            top: 20vh;
+            right: 20vh;
+            width: 5%;
+            height: 5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 11;
+        }
+        .video-toggle button {
+            padding: 0.5rem 1rem;
+            border: none;
+            outline: none;
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            font-size: 1rem;
+            font-weight: 100;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 15vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        nav {
+            padding: 0 2rem;
+            width: 85%;
+            height: 70%;  
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            backdrop-filter: blur(8px);
+        }
+        .logo {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-text {
+            font-family: 'Lato', sans-serif;
+            font-size: 2rem;
+            font-weight: 300;
+            background: linear-gradient(to right, #008cff, #00e2ff);
+            color: transparent;
+            -webkit-background-clip: text; 
+            background-clip: text;
+        }
+
+        .links {
+            height: 5vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255,255,255,0.01);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+        .links ul {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+        .links ul li {
+            list-style: none;
+            margin: 0 1.3rem;
+        }
+        .links ul li a {
+            text-decoration: none;
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 300;
+            transition: all 0.3s ease-in-out;
+        }
+        .links ul li a:hover {
+            color: grey;
+        }
+        .login {
+            height: 5vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .button button {
+            padding: 0.5rem 1rem;
+            border: none;
+            outline: none;
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            font-size: 1rem;
+            font-weight: 100;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+        .button button:hover {
+            color: grey;
+        }
+        .intro {
+            width: 100%;
+            height: 87vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #backgroundVideo {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.5;
+            filter: saturate(2);
+            mask: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+        }
+        .pebble {
+            font-size: 1rem;
+            font-weight: 300;
+            background: transparent;
+            padding: 0.4rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 1rem;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+        }
+        .pebble .text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: linear-gradient(to bottom, #5fc4ff , #008cff);
+            color: transparent;
+            -webkit-background-clip: text; 
+            background-clip: text;
+        }
+        .intro-text {
+            color: rgb(219, 219, 219);
+            margin-bottom: 1rem;
+        }
+        .intro-text span{   
+            font-family: 'Lato', sans-serif;
+            text-align: center; 
+            font-size: 4rem;
+            font-weight: 400;
+            filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.2));
+        }
+        .tagline p {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+        .about {
+            width: 85%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+        .p-about {
+            margin-top: 2rem;
+        }
+        .about-text {
+            color: rgb(219, 219, 219);
+            margin: 1rem 0;
+        }
+        .about-text span{   
+            font-family: 'Audiowide', cursive;
+            text-transform:uppercase;
+            text-align: center; 
+            font-size: 4rem;
+            font-weight: 400;
+            filter: drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.2));
+        }
+        .about-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .about-content-text {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .about-content-text p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="video-toggle">
+        <button onclick="toggle_video()"><i class="bi bi-camera-video"></i></button>
+    </div>
+    <header>
+        <nav>
+            <!-- logo -->
+            <div class="logo">
+                <div class="logo-text">
+                    <span>Dine</span><span>Sync</span>
+                </div>
+            </div>
+            <!-- links -->
+            <div class="links">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Mission</a></li>
+                    <li><a href="#">Creator</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <!-- login -->
+            <div class="button">
+                <a href="{% url 'login' %}"><button>Login</button></a>
+            </div>
+        </nav>
+    </header>
+    <article class="intro">
+        <video id="backgroundVideo" muted loop autoplay>
+            <source src="{%static 'images/bg.webm'%}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          
+        <div class="pebble">
+            <div class="text">
+                <i class="bi bi-stars"></i>&nbsp;
+            Your cost-effective solution to manage your restaurant.
+            </div>
+        </div>
+        <div class="intro-text">
+            <span>Manage better with DineSync.</span>
+        </div>
+        <div class="tagline">
+            <p>Manage your Tables, Orders & Bills seamlessly.</p>
+        </div>
+        <div class="button">
+            <a href="{% url 'login' %}"><button>Login to DineSync</button></a>
+        </div>
+    </article>
+    <!-- <article class="about">
+        <div class="pebble p-about">
+            <div class="text">
+                <i class="bi bi-stars"></i>&nbsp;
+                DineSync can be hosted on your local Wi-Fi network, eliminating the need for worldwide web hosting.
+            </div>
+        </div>
+        <div class="about-text">
+            <span>About</span>
+        </div>
+        <div class="about-content">
+            <div class="about-content-text">
+                <p>
+                    DineSync is a cost-effective solution to manage your restaurant. 
+                    It is a web-based application that can be accessed from any device with a browser and an internet connection.
+                    It is a one-stop solution for all your restaurant management needs.
+                </p>
+            </div>
+            <div class="about-content-image">
+                <img src="images/about.png" alt="">
+            </div>
+        </div>
+    </article> -->
+    <script>
+        function toggle_video() {
+            var video = document.getElementById("backgroundVideo");
+            var toggle = document.querySelector(".video-toggle button");
+            if (video.style.display === "block" || video.style.display === "") {
+                toggle.innerHTML = `<i class="bi bi-camera-video-off"></i>`;
+                video.autoplay = false;
+                video.style.display = "none";
+            } else {
+                toggle.innerHTML = `<i class="bi bi-camera-video"></i>`;
+                video.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
