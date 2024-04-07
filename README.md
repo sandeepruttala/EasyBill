@@ -105,10 +105,11 @@ We welcome contributions to EasyBill! If you have suggestions for improvements o
 
 ## Contact
 For any questions or comments about EasyBill, please 
+
 mail to `itssandeepruttala@gmail.com`
 
-Feedback and Issues: We highly value your feedback and contributions to making EasyBill even better. If you encounter any issues or would like to suggest enhancements, please report them through our GitHub Issues page. This helps us track and address your concerns more efficiently. To report an issue, visit EasyBill Issues and click on the "New Issue" button. Please provide as much detail as possible to help us understand the context and address the issue promptly.
+### Feedback and Issues: 
+We highly value your feedback and contributions to making EasyBill even better. If you encounter any issues or would like to suggest enhancements, please report them through our GitHub Issues page. This helps us track and address your concerns more efficiently. To report an issue, visit EasyBill Issues and click on the "New Issue" button. Please provide as much detail as possible to help us understand the context and address the issue promptly.
 
 Your insights and feedback play a crucial role in improving EasyBill and ensuring it meets the needs of its users. Thank you for your support and contributions!
-
 
