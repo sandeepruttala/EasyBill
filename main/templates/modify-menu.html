@@ -145,7 +145,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         .add-category {
@@ -438,20 +438,20 @@
         <div class="heading">
             <p><i class="fa-solid fa-gears"></i>&nbsp;&nbsp;Modify Menu</p>
         </div>
+        <div class="buttons">
+            <!-- add category -->
+            <div class="add-category">
+                <button onclick="category_popup()" class="add-category-btn"><i class="fas fa-plus"></i>&nbsp;Category</button>
+            </div>
+            <!-- add item -->
+            <div class="add-item">
+                <button onclick="item_popup()" class="add-item-btn"><i class="fas fa-plus"></i>&nbsp;Item</button>
+            </div>
+        </div>
         <div class="menu">
             <table class="table">
                 <!-- dynamic -->
             </table>
-        </div>
-    </div>
-    <div class="buttons">
-        <!-- add category -->
-        <div class="add-category">
-            <button onclick="category_popup()" class="add-category-btn"><i class="fas fa-plus"></i>&nbsp;Category</button>
-        </div>
-        <!-- add item -->
-        <div class="add-item">
-            <button onclick="item_popup()" class="add-item-btn"><i class="fas fa-plus"></i>&nbsp;Item</button>
         </div>
     </div>
     <div class="categoryp popup">
