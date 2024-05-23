@@ -6,6 +6,8 @@ from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 import os
+import platform
+import subprocess
 
 def home(request):
     return render(request, 'index.html')
@@ -57,15 +59,8 @@ def logout_(request):
 def admin_(request):
     user = request.user
     if user.is_authenticated and user.is_superuser:
-        if os.name == 'nt':
-            ip = os.popen('ipconfig').read().split('\n')
-            for i in ip:
-                if 'IPv4 Address' in i:
-                    ip = i.split(':')[-1].strip()
-                    break
-        else:
-            ip = os.popen('ipconfig getifaddr en0').read().strip()
-            return render(request, 'admin.html', {'ip': ip})
+        ip = get_ip_address()
+        return render(request, 'admin.html', {'ip': ip})
     else:
         return redirect('login')
 
@@ -311,3 +306,27 @@ def calculate_fare(request, table_number):
             total += i.item.price * i.quantity
         return JsonResponse({'total': total})
     return JsonResponse({'status': 'error'})
+
+
+
+def get_ip_address():
+    os_type = platform.system().lower()
+    if os_type == 'windows':
+        command = 'ipconfig'
+        search_phrase = 'IPv4 Address'
+    else:
+        command = 'ifconfig'
+        search_phrase = 'inet '
+
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    stdout, stderr = process.communicate()
+
+    # Decode stdout to text
+    output = stdout.decode('utf-8')
+
+    # Finding the IP address
+    for line in output.split('\n'):
+        if search_phrase in line and '127.0.0.1' not in line:
+            ip_address = line.split(':')[-1].strip() if os_type == 'windows' else line.split(' ')[1].split(':')[0].strip()
+            return ip_address
+    return 'Unavailable'
