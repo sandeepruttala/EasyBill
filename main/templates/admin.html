@@ -69,6 +69,14 @@
             height: 90%;
             border: 0.1px solid #d8d7d7;
         }
+
+        .url {
+            background-color: rgb(0, 98, 255);
+            color: white;
+            font-size: 15px;
+            padding: 10px;
+        }
+
         .main {
             width: 100%;
             min-height: 100vh;
@@ -293,6 +301,9 @@
     <div class="main">
         <div class="welcome">
             Welcome, {{ user.username }}!
+        </div>
+        <div class="url">
+            {{ip}}:8000
         </div>
         <div class="cards">
             

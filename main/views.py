@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
+import os
 
 def home(request):
     return render(request, 'index.html')
@@ -56,7 +57,15 @@ def logout_(request):
 def admin_(request):
     user = request.user
     if user.is_authenticated and user.is_superuser:
-        return render(request, 'admin.html')
+        if os.name == 'nt':
+            ip = os.popen('ipconfig').read().split('\n')
+            for i in ip:
+                if 'IPv4 Address' in i:
+                    ip = i.split(':')[-1].strip()
+                    break
+        else:
+            ip = os.popen('ipconfig getifaddr en0').read().strip()
+            return render(request, 'admin.html', {'ip': ip})
     else:
         return redirect('login')
 
@@ -119,7 +128,6 @@ def fetch_staff(request):
             'id': i.id,
             'session': i.session,
         })
-    # print(data)
     return JsonResponse({'data': data})
 
 def delete_staff(request):
